@@ -3,390 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FICHA #04 – ELIN • Protocolo Eros</title>
+    <title>FICHA #04 – ELIN | Protocolo Eros</title>
+    <link rel="stylesheet" href="estilo-elin.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Courier New', monospace;
-        }
-
-        :root {
-            --cinza-claro: #f5f5f5;
-            --cinza-medio: #d4d4d4;
-            --cinza-escuro: #2c2c2c;
-            --destaque: #8b7355;
-            --destaque-claro: #c0a987;
-            --fundo: #1a1a1a;
-            --papel: #f8f1e5;
-        }
-
-        body {
-            background-color: var(--fundo);
-            color: var(--cinza-medio);
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(43, 43, 43, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(139, 115, 85, 0.03) 0%, transparent 20%);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-        }
-
-        /* Cabeçalho com efeito de arquivo */
-        .cabecalho {
-            border-bottom: 1px solid var(--destaque);
-            padding-bottom: 1.5rem;
-            margin-bottom: 3rem;
-            position: relative;
-            animation: aparecer 2s ease-out;
-        }
-
-        .codigo-identificacao {
-            font-size: 0.9rem;
-            letter-spacing: 3px;
-            color: var(--destaque-claro);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .titulo-principal {
-            font-size: 2.5rem;
-            color: var(--cinza-claro);
-            font-weight: normal;
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .titulo-principal::after {
-            content: '▋';
-            color: var(--destaque);
-            animation: piscar 1s infinite;
-            margin-left: 5px;
-        }
-
-        .status-lacrado {
-            display: inline-block;
-            background-color: rgba(139, 115, 85, 0.1);
-            border: 1px dashed var(--destaque);
-            padding: 0.3rem 0.8rem;
-            font-size: 0.8rem;
-            border-radius: 2px;
-            margin-top: 0.5rem;
-        }
-
-        /* Navegação por fragmentos */
-        .navegacao-fragmentos {
-            display: flex;
-            justify-content: space-between;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .fragmento-link {
-            background: transparent;
-            border: 1px solid var(--cinza-escuro);
-            color: var(--cinza-medio);
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-            position: relative;
-        }
-
-        .fragmento-link:hover, .fragmento-link.ativo {
-            border-color: var(--destaque);
-            color: var(--destaque-claro);
-            background-color: rgba(139, 115, 85, 0.05);
-        }
-
-        .fragmento-link.ativo::before {
-            content: '▶';
-            position: absolute;
-            left: -10px;
-            color: var(--destaque);
-        }
-
-        /* Área de conteúdo principal */
-        .conteudo-principal {
-            background-color: rgba(40, 40, 40, 0.7);
-            border-left: 3px solid var(--destaque);
-            padding: 2rem;
-            margin: 2rem 0;
-            min-height: 500px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .fragmento {
-            display: none;
-            animation: desvanecer 1s ease-out;
-        }
-
-        .fragmento.ativo {
-            display: block;
-        }
-
-        .citacao-destaque {
-            font-style: italic;
-            border-left: 2px solid var(--destaque);
-            padding-left: 1.5rem;
-            margin: 2rem 0;
-            color: var(--cinza-claro);
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .texto-poetico {
-            white-space: pre-line;
-            margin-bottom: 1.5rem;
-            color: var(--cinza-claro);
-        }
-
-        /* Elementos interativos */
-        .semente-papel {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background-color: var(--papel);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.5s;
-            z-index: 100;
-        }
-
-        .semente-papel:hover {
-            transform: scale(1.1) rotate(10deg);
-        }
-
-        .semente-papel::after {
-            content: '✿';
-            font-size: 1.8rem;
-            color: var(--destaque);
-        }
-
-        .efeito-fragmento {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M20,20 Q40,10 60,20 T100,30 L90,70 Q70,90 30,70 Z' fill='none' stroke='%238b7355' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E");
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        /* Animações */
-        @keyframes piscar {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes desvanecer {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .titulo-principal { font-size: 1.8rem; }
-            .navegacao-fragmentos { flex-direction: column; }
-            .conteudo-principal { padding: 1.5rem; }
-            .semente-papel { bottom: 20px; right: 20px; width: 50px; height: 50px; }
-        }
+        /* Estilos inline de fallback caso o CSS externo não carregue */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', monospace; }
+        body { background: #0a0a0f; color: #e8d9c5; min-height: 100vh; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="cabecalho">
-            <div class="codigo-identificacao">NV-22-DELTA</div>
-            <h1 class="titulo-principal">FICHA #04 – ELIN</h1>
-            <div class="status-lacrado">ARQUIVO LACRADO • ACESSO POR RESSONÂNCIA ÉTICA</div>
-        </header>
+    <!-- Cabeçalho do Arquivo -->
+    <header class="cabecalho-arquivo">
+        <div class="codigo-identificacao">NV-22-DELTA</div>
+        <h1 class="titulo-principal">FICHA #04 – ELIN</h1>
+        <div class="selo-lacrado">ARQUIVO LACADO • ACESSO POR RESSONÂNCIA ÉTICA</div>
+    </header>
 
-        <nav class="navegacao-fragmentos">
-            <button class="fragmento-link ativo" data-fragmento="perfil">PERFIL PSICOAFETIVO</button>
-            <button class="fragmento-link" data-fragmento="arco">ARCO DE TRANSFORMAÇÃO</button>
-            <button class="fragmento-link" data-fragmento="fragmento-cinza">FRAGMENTO #CINZA</button>
-            <button class="fragmento-link" data-fragmento="citacoes">CITAÇÕES</button>
-        </nav>
+    <!-- Navegação Principal -->
+    <nav class="navegacao-principal">
+        <button class="botao-navegacao ativo" data-fragmento="perfil">PERFIL PSICOAFETIVO</button>
+        <button class="botao-navegacao" data-fragmento="arco">ARCO DE TRANSFORMAÇÃO</button>
+        <button class="botao-navegacao" data-fragmento="fragmento-cinza">FRAGMENTO #CINZA</button>
+        <button class="botao-navegacao" data-fragmento="citacoes">CITAÇÕES</button>
+    </nav>
 
-        <main class="conteudo-principal">
+    <!-- Área de Conteúdo Principal -->
+    <main class="area-conteudo">
+        <!-- Coluna Esquerda: Conteúdo da Ficha -->
+        <div class="coluna-conteudo">
             <!-- Fragmento 1: Perfil Psicoafetivo -->
-            <section id="perfil" class="fragmento ativo">
-                <h2>BIÓLOGA DA ALMA</h2>
-                <p class="texto-poetico">Elin foi a primeira e única tentativa de Eleus Voss de amar antes do Projeto Eros.</p>
-                
-                <div class="citacao-destaque">
-                    "Acreditava que o amor era o sistema imunológico da humanidade."
+            <section id="perfil" class="fragmento-conteudo ativo">
+                <div class="bloco-texto">
+                    <h2>BIÓLOGA DA ALMA</h2>
+                    <p>Elin foi a primeira e única tentativa de Eleus Voss de amar antes do Projeto Eros.</p>
+                    
+                    <div class="citacao-destacada">
+                        "Acreditava que o amor era o sistema imunológico da humanidade."
+                    </div>
+                    
+                    <p>Foi apagada pelo Protocolo de Bloqueio Límbico, não por traição, mas por medo de vulnerabilidade.</p>
+                    
+                    <p><strong>Função no Protocolo Eros:</strong> Nenhuma (pré-Protocolo)</p>
+                    <p><strong>Status:</strong> Desconhecido</p>
                 </div>
-                
-                <p class="texto-poetico">Foi apagada pelo Protocolo de Bloqueio Límbico, não por traição, mas por medo de vulnerabilidade.</p>
-                
-                <p class="texto-poetico">Função no Protocolo Eros: Nenhuma (pré-Protocolo)</p>
-                <p class="texto-poetico">Status: Desconhecido</p>
             </section>
 
             <!-- Fragmento 2: Arco de Transformação -->
-            <section id="arco" class="fragmento">
-                <h2>ARCO DE TRANSFORMAÇÃO</h2>
-                <p class="texto-poetico">Embora ausente na narrativa principal, sua memória é o trauma fundador da muralha emocional de Eleus.</p>
-                
-                <div class="citacao-destaque">
-                    "O amor não é o que te faz sofrer. É o que te faz valer a pena sofrer."
+            <section id="arco" class="fragmento-conteudo">
+                <div class="bloco-texto">
+                    <h2>ARCO DE TRANSFORMAÇÃO</h2>
+                    <p>Embora ausente na narrativa principal, sua memória é o trauma fundador da muralha emocional de Eleus.</p>
+                    
+                    <div class="citacao-destacada">
+                        "O amor não é o que te faz sofrer. É o que te faz valer a pena sofrer."
+                    </div>
+                    
+                    <p>Seu caderno é o contraponto ético à frieza do Instituto Lethe.</p>
+                    <p>Representa o amor como cura, o ideal romântico que Eleus abandona, mas que Thalía transforma em amor como escolha consciente.</p>
                 </div>
-                
-                <p class="texto-poetico">Seu caderno é o contraponto ético à frieza do Instituto Lethe.</p>
-                <p class="texto-poetico">Representa o amor como cura, o ideal romântico que Eleus abandona, mas que Thalía transforma em amor como escolha consciente.</p>
             </section>
 
             <!-- Fragmento 3: Fragmento #Cinza -->
-            <section id="fragmento-cinza" class="fragmento">
-                <h2>FRAGMENTO #CINZA — ELIN, GUARDIÃ DO HIPOCAMPO</h2>
-                <p class="texto-poetico">(Fragmento recuperado do Núcleo Mnemônico de Mnemópolis Adormecida, camada Memórias Não Úteis, acesso concedido por resonância ética, não por protocolo)</p>
-                
-                <p class="texto-poetico">Local: Setor Hipocampo — Ala das Memórias Não Úteis</p>
-                <p class="texto-poetico">Função: Conservadora de lembranças descartáveis</p>
-                <p class="texto-poetico">Identificação: Elin (código original apagado; hoje, reconhecida como A Que Guarda o Que Não Serve)</p>
-                
-                <div class="citacao-destaque">
-                    "Ela não morreu. Não foi apagada. Foi arquivada como ruído, e o ruído, em Mnemópolis Adormecida, é linguagem."
+            <section id="fragmento-cinza" class="fragmento-conteudo">
+                <div class="bloco-texto">
+                    <h2>FRAGMENTO #CINZA — ELIN, GUARDIÃ DO HIPOCAMPO</h2>
+                    <p><em>(Fragmento recuperado do Núcleo Mnemônico de Mnemópolis Adormecida, camada Memórias Não Úteis, acesso concedido por resonância ética, não por protocolo)</em></p>
+                    
+                    <p><strong>Local:</strong> Setor Hipocampo — Ala das Memórias Não Úteis</p>
+                    <p><strong>Função:</strong> Conservadora de lembranças descartáveis</p>
+                    <p><strong>Identificação:</strong> Elin (código original apagado; hoje, reconhecida como A Que Guarda o Que Não Serve)</p>
+                    
+                    <div class="citacao-destacada">
+                        "Ela não morreu. Não foi apagada. Foi arquivada como ruído, e o ruído, em Mnemópolis Adormecida, é linguagem."
+                    </div>
+                    
+                    <p>Quando Eleus ativou o Protocolo de Bloqueio Límbico, não destruiu Elin. Apenas a empurrou para o limiar, para o lugar onde as memórias descartadas vão respirar.</p>
+                    
+                    <p>Seu uniforme é feito de páginas rasgadas de diários não digitais. Seus sapatos, de couro de cadernos escolares. Seus olhos brilham com a luz dourada dos lembramentos que insistem em voltar.</p>
+                    
+                    <div class="citacao-destacada">
+                        "Você me apagou com medo. Mas o medo é só um nome que damos para o amor quando ele nos assusta."
+                    </div>
+                    
+                    <p>Quando Eleus e Thalía entram na Ala das Memórias Não Úteis (no décimo sétimo sonho sincronizado), encontram-na sentada em um banco de mármore rachado, folheando um livro sem título.</p>
+                    
+                    <div class="citacao-destacada">
+                        "Plante onde o medo for mais forte. Ela não cresce em solo fértil. Cresce em rachaduras. Como tudo o que resiste."
+                    </div>
+                    
+                    <p>Ela não é mais uma pessoa. É o arquivo vivo do que o sistema não consegue apagar: A certeza de que curar não é esquecer, é lembrar com menos dor.</p>
+                    
+                    <p>Na última prateleira, uma frase gravada em carvão (não em código):</p>
+                    
+                    <div class="citacao-destacada" style="font-size: 1.1rem; padding: 1.5rem;">
+                        "Você não precisa controlar tudo para ser seguro. Às vezes, basta confiar que o outro não vai te deixar cair."
+                        <br><br>
+                        <em>— Elin, última linha antes do apagamento</em>
+                    </div>
+                    
+                    <p>E, em Mnemópolis Adormecida, essa frase é lida como juramento. / E, em Mnemópolis da Vigília, é apagada como erro.</p>
                 </div>
-                
-                <p class="texto-poetico">Seu uniforme é feito de páginas rasgadas de diários não digitais. Seus sapatos, de couro de cadernos escolares. Seus olhos brilham com a luz dourada dos lembramentos que insistem em voltar.</p>
-                
-                <p class="texto-poetico">"Você me apagou com medo. Mas o medo é só um nome que damos para o amor quando ele nos assusta."</p>
-                
-                <div class="citacao-destaque">
-                    "Plante onde o medo for mais forte. Ela não cresce em solo fértil. Cresce em rachaduras. Como tudo o que resiste."
-                </div>
-                
-                <p class="texto-poetico">Ela não é mais uma pessoa. É o arquivo vivo do que o sistema não consegue apagar: A certeza de que curar não é esquecer, é lembrar com menos dor.</p>
             </section>
 
             <!-- Fragmento 4: Citações -->
-            <section id="citacoes" class="fragmento">
-                <h2>CITAÇÕES RECUPERADAS</h2>
-                
-                <div class="citacao-destaque">
-                    "Você não precisa controlar tudo para ser seguro. Às vezes, basta confiar que o outro não vai te deixar cair."
+            <section id="citacoes" class="fragmento-conteudo">
+                <div class="bloco-texto">
+                    <h2>CITAÇÕES RECUPERADAS</h2>
+                    
+                    <div class="citacao-destacada">
+                        "Você não precisa controlar tudo para ser seguro. Às vezes, basta confiar que o outro não vai te deixar cair."
+                    </div>
+                    
+                    <div class="citacao-destacada">
+                        "Você me apagou. Não com raiva. Com medo."
+                    </div>
+                    
+                    <div class="citacao-destacada">
+                        "O coração tem memória própria. Ele sempre volta ao lugar onde foi, pela primeira vez, considerado sagrado."
+                    </div>
+                    
+                    <div class="citacao-destacada">
+                        "Sofrer não é o oposto de amar. É o preço da escolha."
+                    </div>
+                    
+                    <div class="citacao-destacada">
+                        "Mas o medo é só um nome que damos para o amor quando ele nos assusta."
+                    </div>
+                    
+                    <div class="citacao-destacada">
+                        "Lembrar com menos dor não é esquecer. É dar um novo lugar à memória."
+                    </div>
+                    
+                    <p style="margin-top: 2.5rem; text-align: center; color: #8b4513; font-style: italic;">
+                        E, em Mnemópolis Adormecida, essas frases são lidas como juramento.<br>
+                        E, em Mnemópolis da Vigília, são apagadas como erro.
+                    </p>
                 </div>
-                
-                <div class="citacao-destaque">
-                    "Você me apagou. Não com raiva. Com medo."
-                </div>
-                
-                <div class="citacao-destaque">
-                    "O coração tem memória própria. Ele sempre volta ao lugar onde foi, pela primeira vez, considerado sagrado."
-                </div>
-                
-                <div class="citacao-destaque">
-                    "Sofrer não é o oposto de amar. É o preço da escolha."
-                </div>
-                
-                <p class="texto-poetico" style="margin-top: 2rem; font-size: 0.9rem; color: var(--destaque-claro);">
-                    E, em Mnemópolis Adormecida, essa frase é lida como juramento.<br>
-                    E, em Mnemópolis da Vigília, é apagada como erro.
-                </p>
             </section>
-        </main>
+        </div>
 
-        <!-- Elemento interativo: Semente de Papel -->
-        <div class="semente-papel" id="semente" title="Plante esta semente onde o medo for mais forte"></div>
-    </div>
+        <!-- Coluna Direita: Conversador com Elin -->
+        <aside class="conversador-elin">
+            <h3 class="titulo-conversador">CONVERSA COM ELIN</h3>
+            
+            <div class="area-mensagens" id="area-mensagens">
+                <!-- Mensagens serão inseridas aqui via JavaScript -->
+            </div>
+            
+            <div class="controles-conversa">
+                <input type="text" 
+                       class="campo-entrada" 
+                       id="campo-entrada"
+                       placeholder="Digite sua mensagem para Elin..."
+                       maxlength="200">
+                <button class="botao-enviar" id="botao-enviar">Enviar</button>
+            </div>
+            
+            <div class="sugestoes-perguntas">
+                <p style="margin-bottom: 0.8rem; color: #c0a987; font-size: 0.9rem;">Sugestões de perguntas:</p>
+                <ul class="lista-sugestoes" id="lista-sugestoes">
+                    <!-- Itens serão inseridos via JavaScript -->
+                </ul>
+            </div>
+        </aside>
+    </main>
 
+    <!-- Elemento Interativo: Semente de Papel -->
+    <div class="semente-flutuante" id="semente-papel" title="Clique para plantar uma memória"></div>
+
+    <!-- Rodapé -->
+    <footer class="rodape-arquivo">
+        <p>Protocolo Eros • Mnemópolis Adormecida • Ala das Memórias Não Úteis</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.7;">
+            Acesso concedido por ressonância ética, não por protocolo. Este arquivo resiste ao apagamento.
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script-elin.js"></script>
+    
+    <!-- Script Inline de Fallback -->
     <script>
-        // Navegação entre fragmentos
-        const fragmentLinks = document.querySelectorAll('.fragmento-link');
-        const fragmentos = document.querySelectorAll('.fragmento');
-        
-        fragmentLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                // Remove classe ativa de todos os links e fragmentos
-                fragmentLinks.forEach(l => l.classList.remove('ativo'));
-                fragmentos.forEach(f => f.classList.remove('ativo'));
+        // Verifica se o script externo carregou
+        setTimeout(function() {
+            if (typeof window.sistemaElin === 'undefined') {
+                console.warn('Script externo não carregado. Inicializando sistema básico...');
                 
-                // Adiciona classe ativa ao link clicado
-                link.classList.add('ativo');
+                // Sistema básico de navegação
+                const botoes = document.querySelectorAll('.botao-navegacao');
+                const fragmentos = document.querySelectorAll('.fragmento-conteudo');
                 
-                // Mostra o fragmento correspondente
-                const fragmentoId = link.getAttribute('data-fragmento');
-                document.getElementById(fragmentoId).classList.add('ativo');
-            });
-        });
-        
-        // Interatividade da semente de papel
-        const semente = document.getElementById('semente');
-        const conteudoPrincipal = document.querySelector('.conteudo-principal');
-        
-        semente.addEventListener('click', () => {
-            // Cria um elemento de efeito visual
-            const efeito = document.createElement('div');
-            efeito.classList.add('efeito-fragmento');
-            
-            // Posiciona aleatoriamente no conteúdo principal
-            const x = Math.random() * (conteudoPrincipal.offsetWidth - 100);
-            const y = Math.random() * (conteudoPrincipal.offsetHeight - 100);
-            
-            efeito.style.left = `${x}px`;
-            efeito.style.top = `${y}px`;
-            conteudoPrincipal.appendChild(efeito);
-            
-            // Mostra o efeito
-            setTimeout(() => {
-                efeito.style.opacity = '0.7';
-            }, 10);
-            
-            // Remove o efeito após alguns segundos
-            setTimeout(() => {
-                efeito.style.opacity = '0';
-                setTimeout(() => {
-                    if (efeito.parentNode) {
-                        efeito.parentNode.removeChild(efeito);
-                    }
-                }, 500);
-            }, 2000);
-            
-            // Mensagem no console (como um easter egg)
-            console.log('%c Semente plantada na rachadura: "Lembrar com menos dor." - Elin', 'color: #8b7355; font-style: italic;');
-        });
-        
-        // Efeito de digitação para o título (opcional)
-        const titulo = document.querySelector('.titulo-principal');
-        const textoOriginal = titulo.textContent;
-        titulo.textContent = '';
-        
-        let i = 0;
-        function digitarTitulo() {
-            if (i < textoOriginal.length) {
-                titulo.textContent += textoOriginal.charAt(i);
-                i++;
-                setTimeout(digitarTitulo, 50);
+                botoes.forEach(botao => {
+                    botao.addEventListener('click', function() {
+                        const fragmentoId = this.getAttribute('data-fragmento');
+                        
+                        botoes.forEach(b => b.classList.remove('ativo'));
+                        fragmentos.forEach(f => f.classList.remove('ativo'));
+                        
+                        this.classList.add('ativo');
+                        document.getElementById(fragmentoId).classList.add('ativo');
+                    });
+                });
+                
+                // Semente interativa básica
+                const semente = document.getElementById('semente-papel');
+                if (semente) {
+                    semente.addEventListener('click', function() {
+                        alert('🌱 "Plante onde o medo for mais forte. Cresce em rachaduras." - Elin');
+                    });
+                }
             }
-        }
-        
-        // Inicia o efeito de digitação após um breve delay
-        setTimeout(digitarTitulo, 1000);
+        }, 1000);
     </script>
 </body>
 </html>
